@@ -297,7 +297,8 @@
 				var plus = App.Player.shuffle ? App.Util.getRandomInt(0, App.Model.Queue.models.length) : (songIndex - 1);
 				if (typeof App.Model.Queue.models[plus] !== 'undefined') {
 					var songId = App.Model.Queue.models[plus].get('songId'),
-						songTitle = App.Model.Queue.models[plus].get('name');
+						songTitle = App.Model.Queue.models[plus].get('name'),
+						bitrate = App.Model.Queue.models[plus].get('bitrate');
 					$('.now-playing').show();
 					$('#audio-span').html('<audio src="' + App.baseURL + '/fetch/' + songId + '.mp3" autoplay="autoplay" id="audio-element" width="100%" volume="' + App.Volume.volume + '"></audio>');
 					
@@ -319,7 +320,7 @@
 					$('#player-download-button div, #player-download-button').data({
 						'song-id':songId,
 						'song-title':songTitle,
-                                                playtime: App.Model.Queue.models[plus].get('bitrate');
+                                                playtime: bitrate;
 					});
 				} else {
 					App.vent.trigger('message', '', 'This is the first song!');
