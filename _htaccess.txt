@@ -1,0 +1,83 @@
+# html5 pushstate (history) support:
+<ifModule mod_rewrite.c>
+   RewriteEngine On
+   #RewriteCond $1 !\.(gif|jpe?g|png)$ [NC]
+   #RewriteCond %{REQUEST_FILENAME} !-f
+   #RewriteCond %{REQUEST_FILENAME} !-d
+   #RewriteCond %{REQUEST_URI} !socket.io
+   #RewriteCond %{REQUEST_URI} !load-snapshot
+   #RewriteCond %{HTTP_USER_AGENT} .*Googlebot.* [OR]
+   #RewriteCond %{HTTP_USER_AGENT} .*Bingbot.* [OR]
+   #RewriteCond %{HTTP_USER_AGENT} .*Baiduspider.* [OR]
+   #RewriteCond %{HTTP_USER_AGENT} .*Yandex.* [OR]
+   #RewriteCond %{HTTP_USER_AGENT} .*iaskspider.*
+   #RewriteCond %{SERVER_PORT} !3000
+   #RewriteCond %{SERVER_PORT} !crawler.php
+   #RewriteRule ^(.*) http://api.%{SERVER_NAME}:3000%{REQUEST_URI} [P]
+
+   # Script that uses HXCMachine and HXCWeb servers to render page for crawler
+   # Based on Server loads - spread crawlers traffic across both machines
+   #RewriteRule (.*) api/crawler.php [L]
+
+   # Use This server to render page for crawler
+   #RewriteRule ^(.*) http://api.%{SERVER_NAME}:3000%{REQUEST_URI} [P]
+
+   #SetEnvIf Host ^hxcmusic\.com$ is_on_public_site
+   #SetEnvIf Host ^www\.hxcmusic\.com$ is_on_public_site
+   #SetEnvIf Host ^hxcmusic\.me$ is_on_public_site
+   #SetEnvIf Host ^www\.hxcmusic\.me$ is_on_public_site
+   #Order deny,allow
+   #Deny from all
+   #Allow from env=is_on_public_site
+   #Satisfy any
+   # Put your password auth stuff here
+   #AuthType Basic
+   #AuthName "HXC Development Website"
+   #AuthUserFile /var/zpanel/hostdata/zadmin/.htpasswd
+   #require valid-user
+
+   RewriteCond %{SERVER_NAME} development
+   RewriteCond %{REQUEST_URI} !devlogin
+   RewriteCond %{HTTP_COOKIE} !^.*hxcdev.*$ [NC]
+   RewriteRule .* /devlogin/index.php [NC]
+
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   #RewriteRule ^css/app.css?$ http://%{SERVER_NAME}:8080/api/app.css [P]
+   RewriteRule ^css/app.css?$ http://node.%{SERVER_NAME}/api/app.css [P]
+
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_URI} !socket.io
+   RewriteCond %{SERVER_PORT} !3000
+   RewriteRule ^css/(.*).css?$ libs/scssphp/style.php/$1.scss
+   RewriteRule ^js/application.js?$ includes/compiler/compile.php
+   RewriteRule ^robots.txt?$ robots.php
+   RewriteRule ^map(.*).xml?$ sitemap.php?action=$1
+   RewriteRule ^sitemap.xml sitemap.php
+   RewriteRule ^fetch_artist/(.*)?$ get_artist.php?artist=$1
+   RewriteRule ^fetch/(.*).mp3?$ fetch.php?encoded=$1
+   RewriteRule ^fetchit/(.*).mp3?$ fetch.php?encoded=$1&limit=1
+   RewriteRule ^fetch_stream/(.*).mp3?$ fetch.php?encoded=$1&stream=1
+   RewriteRule ^fetchit_stream/(.*).mp3?$ fetch.php?encoded=$1&limit=1&stream=1
+   RewriteRule ^artist-image/(.*)?$ image.php?id=$1
+   RewriteRule ^notify/(.*)/(.*).php?$ notify.php?script=$1&action=$2
+   RewriteRule ^js/preloadData.js?$ includes/preloadData.php
+   RewriteRule ^albumcover/(.*).png?$ api/album-cover.php?search=$1
+
+   RewriteRule ^socket.io/(.*)?$ http://%{SERVER_NAME}:8080/socket.io/$1
+
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_URI} !index
+   RewriteCond %{REQUEST_URI} !fetch
+   RewriteCond %{REQUEST_URI} !fetch_artist
+   RewriteCond %{REQUEST_URI} !socket.io
+   RewriteCond %{REQUEST_URI} !fetchit
+   RewriteCond %{REQUEST_URI} !fetch_stream
+   RewriteCond %{REQUEST_URI} !fetchit_stream
+   RewriteCond %{REQUEST_URI} !css
+   RewriteCond %{SERVER_PORT} !3000
+   RewriteCond %{SERVER_PORT} !engine.php
+   RewriteRule (.*) index.php [L]
+</ifModule>

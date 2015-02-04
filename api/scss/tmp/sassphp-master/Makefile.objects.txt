@@ -1,0 +1,10 @@
+src/sass.lo: /var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master/src/sass.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master/src/sass.c -o src/sass.lo 
+src/utilities.lo: /var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master/src/utilities.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /var/zpanel/hostdata/zadmin/production/scss/tmp/sassphp-master/src/utilities.c -o src/utilities.lo 
+$(phplibdir)/sass.la: ./sass.la
+	$(LIBTOOL) --mode=install cp ./sass.la $(phplibdir)
+
+./sass.la: $(shared_objects_sass) $(SASS_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_sass) $(SASS_SHARED_LIBADD)
+

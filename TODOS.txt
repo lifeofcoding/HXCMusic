@@ -1,0 +1,5 @@
+Development Todo list:
+Fix play all buttons
+
+Create a onbeforeunload
+alert prompt when user is currently streaming a song or video. Prompt user to confirm exit.

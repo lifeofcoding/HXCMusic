@@ -1,0 +1,20 @@
+RewriteEngine On
+RewriteRule ^events/(.*)/(.*)/(.*)/(.*)?$ /events.php?zipCode=$1&miles=$2&page=$3&country=$4 [P]
+RewriteRule ^albuminfo/(.*)?$ /album-info.php?search=$1 [P]
+RewriteRule ^albumcover/(.*).png?$ /album-cover.php?search=$1 [P]
+RewriteRule ^bio/(.*)?$ /bio.php?artist=$1 [P]
+RewriteRule ^(.*)/music/(.*)?$ /music.php?sort_by=$1&page=$2 [P]
+RewriteRule ^music/(.*)?$ /music.php?page=$1 [P]
+RewriteRule ^radio?$ /radio.php [P]
+RewriteRule ^suggestions?$ /suggest.php [P]
+
+RewriteCond %{REQUEST_URI} !albumcover
+RewriteCond %{REQUEST_URI} !radio
+RewriteCond %{REQUEST_URI} !albuminfo
+RewriteCond %{REQUEST_URI} !bio
+RewriteCond %{REQUEST_URI} !music
+RewriteCond %{REQUEST_URI} !events
+RewriteCond %{REQUEST_URI} !suggestions
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]

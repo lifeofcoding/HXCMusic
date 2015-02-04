@@ -1,0 +1,58 @@
+<virtualhost *:80>
+ServerName stats.hxcmusic.com
+ServerAlias 178.62.169.191
+ServerAdmin zadmin@localhost
+DocumentRoot "/var/zpanel/hostdata/zadmin/public_html/hxcmusic_com/production/status"
+<Directory />
+Options FollowSymLinks Indexes
+AllowOverride All
+Order Allow,Deny
+Allow from all
+</Directory>
+</virtualhost>
+
+<virtualhost *:80>
+ServerName cloud.hxcmusic.com
+ServerAdmin zadmin@localhost
+DocumentRoot "/var/zpanel/hostdata/zadmin/public_html/hxcmusic_com/production/cloud"
+<Directory />
+Options FollowSymLinks Indexes
+AllowOverride All
+Order Allow,Deny
+Allow from all
+</Directory>
+</virtualhost>
+
+<virtualhost *:80>
+ServerName api.hxcmusic.com
+ServerAdmin zadmin@localhost
+DocumentRoot "/var/zpanel/hostdata/zadmin/public_html/hxcmusic_com/production/api"
+<Directory />
+Options FollowSymLinks Indexes
+AllowOverride All
+Order Allow,Deny
+Allow from all
+</Directory>
+</virtualhost>
+
+<virtualhost *:80>
+ServerName development.hxcmusic.com
+ServerAdmin zadmin@localhost
+DocumentRoot "/var/zpanel/hostdata/zadmin/public_html/hxcmusic_com/development"
+<Directory />
+Options FollowSymLinks Indexes
+AllowOverride All
+Order Allow,Deny
+Allow from all
+</Directory>
+</virtualhost>
+
+<VirtualHost *:80>
+  ServerName node.hxcmusic.com
+  ProxyPass / http://127.0.0.1:8080/
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName crawlers.hxcmusic.com
+  ProxyPass / http://127.0.0.1:3000/
+</VirtualHost>
