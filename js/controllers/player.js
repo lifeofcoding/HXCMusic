@@ -315,9 +315,12 @@
 					App.Player.play();
 					
 					$('#player-download-button').show();
-					$('#player-download-button div, #player-download-button').data('song-id', songId);
-					$('#player-download-button div, #player-download-button').data('song-title', songTitle);
-					$('#player-download-button div, #player-download-button').data('playtime', App.Model.Queue.models[plus].get('bitrate'));
+
+					$('#player-download-button div, #player-download-button').data({
+						'song-id':songId,
+						'song-title':songTitle,
+                                                playtime: App.Model.Queue.models[plus].get('bitrate');
+					});
 				} else {
 					App.vent.trigger('message', '', 'This is the first song!');
 				}
