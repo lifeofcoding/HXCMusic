@@ -442,13 +442,16 @@
 
 		updateQueue: function() {
 			this.Queue.show(new App.View.Queue());
+			//$('#current_playlist_rows').html(_.template($('#queue-tpl').html())());
 		},
 
 		addAllToQueue: function() {
 			if (App.currentPage !== 'searchVideos') {
 				var collection = App.currentPage === 'showFavorites' ? App.Model.Favorites : App.Model.Music,
-				    actionText = App.currentPage === 'showFavorites' ? 'favorites' : 'results';
+					actionText = App.currentPage === 'showFavorites' ? 'favorites' : 'results';
 				if (collection.models.length > 0) {
+					//App.Model.Queue.add(collection.models);
+					
 					//add each model to queue collection 
 					var songModels = [];
 					for(var i = 0, len = collection.models.length; i < len; ++i){
@@ -520,11 +523,15 @@
 
 		updateUILoggedIn: function() {
 			var me = this;
+			//App.Util.waitTillReady('#top_right', function() {
 			var updateUI = function() {
 				$.cookie('HXCID', App.User.id);
 				App.Model.Favorites = new App.Model.Favorites();
 				$('#top_right').html('<a href="' + App.baseURL + '/profile" id="account_link" class="account_link">My Account</a> <a href="#" id="sign_out_link" data-bypass="true" class="account_link">Logout</a>');
 				me.UserNav.show(new App.View.UserNav());
+				//me.UserNav.$el.hide();
+				//setTimeout(function(){ me.UserNav.$el.addClass('animated fadeInUp').show(); }, 3000);
+
 				UserVoice.push(['identify', {
 					email: App.Model.User.get('email'), // User’s email address
 					account: {
@@ -542,6 +549,7 @@
 					updateUI();
 				});
 			}
+			//});
 		},
 
 		signUp: function(e) {
@@ -566,6 +574,23 @@
 		},
 
 		hideHomepage: function() {
+/* 			var css = {},
+				homepage = $('#homepage');
+			css.transition = '-webkit-transform 1s';
+			css[App.browserPrefix.css + 'transform'] = 'translate3d(0, 100%,0)';
+			homepage.css(css).afterTransition(function() {
+				$('#explore').css('visibility', 'visible');
+				homepage.removeAttr('style');
+				homepage.hide();
+				$('#explore_nav').css('visibility', 'visible');
+			}); */
+			//$('#homepage').animo({ animation: 'vanishOut', duration: 0.4, keep: false }, function(){
+				//$('#homepage').removeAttr('style');
+				//$('#explore').css('visibility', 'visible');
+				//$('#homepage').hide();
+				//$('#explore_nav').css('visibility', 'visible');
+				//App.vent.trigger('close:homepage');
+			//});
 			App.vent.trigger('close:homepage');
 		},
 
@@ -614,14 +639,21 @@
 						});
 					}
 				},
+/* 				open: function(){
+					var me = $(this);
+					me.hide();
+					me.animo({ animation: 'vanishIn', duration: 0.35, keep: false });
+				}, */
 				openDuration: 200,
 				closeDuration: 200,
 				open: function(){
 					var me = $(this);
+					//me.hide();
 					me.animo({ animation: 'vanishIn', duration: 0.3, keep: false });
 				},
 				beforeClose: function(){
 					var me = $(this);
+					//me.show();
 					me.animo({ animation: 'vanishOut', duration: 0.3, keep: false }, function(){
 						//debugger;
 						me.hide();
@@ -629,6 +661,8 @@
 				},
 				beforeOpen: function() {
 					var me = $(this);
+					//me.hide();
+					//me.animo({ animation: 'jelly', duration: 1, keep: false });
 					if (title === '') {
 						$(this).find('.jGrowl-message').css('margin-top', '11px');
 					}
@@ -666,20 +700,14 @@
 			this.setPageSubTitle('');
 			this.hidePlayAll();
 			App.vent.trigger('message', 'Error', 'Unable to load page...');
-
-			var errorWrapper = '<div class="error-wrapper">';
-			errorWrapper += '<div class="error-message">Oops... Looks like we are having some trouble.</div>';
-			errorWrapper += '<br>We have been notified of the problem. Please wait a few minutes and try again.</div>';
-			$('#explore_content_sotd').html(errorWrapper);
+			$('#explore_content_sotd').html('<div class="error-wrapper"><div class="error-message">Oops... Looks like we are having some trouble.</div><br>We have been notified of the problem. Please wait a few minutes and try again.</div>');
 		},
 
-		scrollToTop: function(callback) {
+		scrollToTop: function() {
 			$('#right').animate({
 				scrollTop: 0
 			}).promise().then(function() {
-				if(typeof callback !== undefined && typeof callback === function){
-					callback();
-				}
+				// callback code here
 			});
 		},
 
@@ -690,6 +718,7 @@
 			App.isLoading = true;
 			this.scrollToTop();
 			App.loadingCountDown = setTimeout(function() {
+				//if ($('#content-loader').length > 0) {
 				if ($('#spinner').is(':visible')) {
 					App.vent.trigger('loading:error');
 					$(document.body).css({
@@ -701,24 +730,45 @@
 			$(document.body).css({
 				cursor: 'progress'
 			});
-
+			//$('#explore_content_sotd').html('<center><img src="' + App.baseURL + '/images/loader-white.gif" id="content-loader"></center>');
+			//$('#content-loader').fadeIn();
 			this.setPageTitle(App.Util.capitalizeWords(title));
 			this.setPageHeader('Loading...');
 			this.setPageSubTitle('Fetching content...');
+			/*$('#fullpage-loading').animo({ animation: 'puffIn', duration: 0.4, keep: false }, function(){
+				$('#fullpage-loading').css({display:'inline-block'});
+			}).show();*/
 			$('#spinner').fadeIn();
 			$('#middle').addClass('blur');
+			//$('#fullpage-loading').fadeIn();
+			//this.ui.loader.fadeIn();
 		},
 
 		hideLoading: function() {
+			//this.ui.loader.fadeOut();
 			App.isLoading = false;
 			$(document.body).css({
 				cursor: 'auto'
 			});
 			clearTimeout(App.loadingCountDown);
 			App.loadingCountDown = false;
-
+			//$('#content-loader').fadeOut('normal', function() {
+			//	$(this).remove();
+			//});
+			//$('#fullpage-loading').fadeOut();
 			$('#spinner').fadeOut();
 			$('#middle').removeClass('blur');
+			/*$('#fullpage-loading').animo({ animation: 'puffOut', duration: 0.5, keep: false }, function(){
+				$('#fullpage-loading').hide();
+			});*/
+/* 			setTimeout(function(){
+				$('#fullpage-loading').animo({ animation: 'puffOut', duration: 0.5, keep: false }, function(){
+					var newImage = '<div id="fullpage-loading"><img src="/loading-bars.svg"></div>';
+					$('#fullpage-loading').remove();
+					$('body').prepend(newImage);
+					//$('#fullpage-loading').removeAttr('style').removeClass('animated puffin').hide();
+				});
+			}, 2000); */
 		},
 		
 		setBackground: function(url, options){
@@ -863,6 +913,7 @@
 			});
 			
 			this.displayAd();
+			//$('#middle').backstretch(App.baseURL + "/images/universe.png", {fade: 1000, centeredX: false, centeredY: true});
 		}
 	});
 
