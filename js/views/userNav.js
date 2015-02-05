@@ -32,10 +32,6 @@
 			_this.$el.find('img').one('load', function() {
 				_this.$el.css('visibility', 'visible');
 				var showUserNav = function() {
-					//me.UserNav.$el.addClass('smack');
-					//me.UserNav.$el.animo( { animation: 'smack', duration: 1.8, keep: false }, function(){
-					//me.UserNav.$el.show();
-					//});
 					_this.$el.animo({
 						animation: 'vanishIn',
 						duration: 0.5,
@@ -87,19 +83,15 @@
 			$(document).on('click', '.upload-button', function(e) {
 				var formData = new FormData($('.uploader-wrapper')[0]);
 				$.ajax({
-					url: App.baseURL + '/api/uploader.php', //Server script to process data
+					url: App.baseURL + '/api/uploader.php',
 					type: 'POST',
-					xhr: function() { // Custom XMLHttpRequest
+					xhr: function() {
 						var myXhr = $.ajaxSettings.xhr();
 						if (myXhr.upload) { // Check if upload property exists
 							//myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
 						}
 						return myXhr;
 					},
-					//Ajax events
-					//beforeSend: beforeSendHandler,
-					//success: completeHandler,
-					//error: errorHandler,
 					// Form data
 					data: formData,
 					//Options to tell jQuery not to process data or worry about content-type.

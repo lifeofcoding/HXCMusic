@@ -32,13 +32,9 @@
 		},
 		
 		/* onRender does not work here but does in favorites view */
-		onRender: function() {
+		onRender: function() {},
 
-		},
-
-		onClose: function() {
-
-		},
+		onClose: function() {},
 		
 		addToQueue: function(e) {
 			App.Controller.Player.addToQueue.apply(this, arguments);

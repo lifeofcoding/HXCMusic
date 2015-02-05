@@ -46,7 +46,6 @@
 		},
 
 		clearQueue: function() {
-			//App.Model.Queue.reset();
 			var collection = this.collection;
 			_.invoke(collection.models, function(){
 				collection.sync('delete', this);
@@ -76,9 +75,7 @@
 			}
 		},
 
-		onShow: function() {
-			//this.stickit();
-		}
+		onShow: function() {}
 	});
 	App.View.Queue = queue;
 })(window.App);
