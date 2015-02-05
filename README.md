@@ -16,6 +16,8 @@ Custom cache system, as well as a custom compiler for my JS assets to become a s
 Custom debugging & development code I made for myself as well as a production publishing process.
 when in debug mode, you have to have a proper session (php) and adds asset js files individually & unminified for debugging lines of code, instead of compiling into one file, and minifying for production session.
 
+Use of socket.io (websockets) for live updates and notifications of other songs being listened to.
+
 Custom error logging
 
 and more...
