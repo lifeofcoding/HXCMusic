@@ -40,25 +40,19 @@
 			var url = this.collection.getURL(options),
 				buttonText = this.ui.eventsButton.html(),
 				currentWidth = this.ui.eventsButton.width(),
-				currentHeight = this.ui.eventsButton.height();
+				currentHeight = this.ui.eventsButton.height(),
+				loadingBars = '<center>';
+				loadingBars += '<img src="/loading-bars-white.svg" style="margin-top:-7px;height:32px;width:auto;">';
+				loadingBars += '</center>';
 
-			this.ui.eventsButton.css({'width':currentWidth+'px', 'height':currentHeight+'px'}).html('<center><img src="/loading-bars-white.svg" style="margin-top:-7px;height:32px;width:auto;"></center>');
+			this.ui.eventsButton.css({
+				'width':currentWidth+'px',
+				'height':currentHeight+'px'
+			}).html(loadingBars);
 
 			this.collection.fetch({url:url, update:true}).done(function(){
 				//_this.ui.eventsButton.html(buttonText);
 			});
-		},
-		
-		onRender: function(){
-
-		},
-
-		onShow: function() {
-
-		},
-
-		onClose: function() {
-
 		},
 		
 		_destory: null,
@@ -66,9 +60,17 @@
 		destroyAnimation: function(){
 			debugger;
 			var _this = this;
-			App.viewport.currentView.Content.$el.animo({animation: "magictime spaceOutLeft", keep: false, duration: 1}, function() {
+			App.viewport.currentView.Content.$el.animo({
+				animation: "magictime spaceOutLeft",
+				keep: false,
+				duration: 1
+			}, function() {
 				_this._destroy();
-				App.viewport.currentView.Content.$el.animo({animation: "magictime spaceInRight", keep: false, duration: 1}, function() {
+				App.viewport.currentView.Content.$el.animo({
+					animation: "magictime spaceInRight",
+					keep: false,
+					duration: 1
+				}, function() {
 
 				}).show();
 			}).show();

@@ -4,7 +4,7 @@
 	var music = Backbone.Marionette.ItemView.extend({
 		template: '#music-tpl',
 
-		className: '',
+		//className: '',
 
 		ui: {
 			loadingImg: '#loading-genres img'
@@ -14,6 +14,7 @@
 			'change .genre_dropdown': 'showGenre'
 		},
 		
+		/* custom object for background changing */
 		background: {
 			url: App.baseURL + '/images/grey_bg5.jpg',
 			options: {fade: 1000, centeredX: false, centeredY: true},
@@ -23,6 +24,7 @@
 		initialize: function() {
 			var _this = this;
 			App.Util.afterPageRender(function(){
+				/*  Inject more results when scrolling */
 				$(App.Regions.contentWindow.el).on('scroll', function(){
 					if(App.currentPage === 'music'){
 						var elementCount = Math.round($('.song_row').length / 3); //start fetching after scrolling 1/3 of the results
@@ -73,8 +75,8 @@
 				$.ajax({
 					url: url(),
 					beforeSend: function(xhr) {
-						//xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-						App.Regions.Content.$el.append('<span id="more-results"><center><img src="/loading-bars.svg"></center></span>');
+						var loadingBars = '<span id="more-results"><center><img src="/loading-bars.svg"></center></span>';
+						App.Regions.Content.$el.append(loadingBars);
 					}
 				}).done(function(data) {
 					$('#more-results').remove();
@@ -100,6 +102,7 @@
 			App.resultsPage = 1;
 		},
 		
+		/* Fade to new background when rendered */
 		onRender: function(){
 			if(typeof this.background !== 'undefined' && this.background.url){
 				if(App.Background[App.Util.getFilename(this.background.url)]){
@@ -107,11 +110,8 @@
 				}
 			}
 		},
-		
-		onShow: function(){
-			//$('#middle').backstretch(App.baseURL + "/images/grey_bg5.jpg", {fade: 1000, centeredX: false, centeredY: true});
-		},
 
+		/* Fade to new background on view exit */
 		onDestroy: function() {
 			if(typeof this.background !== 'undefined' && this.background.changeOnExit){
 				App.setBackground(this.background.changeOnExit, this.background.options);

@@ -31,10 +31,6 @@
 			}
 		},
 		
-		onShow: function() {
-			//$('#middle').backstretch(App.baseURL + "/images/planet%20on%20the%20valley.jpg", {fade: 1000, centeredX: false, centeredY: true});
-		},
-		
 		onDestroy: function() {
 			if(typeof this.background !== 'undefined' && this.background.changeOnExit){
 				App.setBackground(this.background.changeOnExit, this.background.options);

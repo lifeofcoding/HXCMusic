@@ -6,9 +6,7 @@
 
 		events: {},
 
-		initialize: function() {
-
-		}
+		initialize: function() {}
 	});
 
 	App.View.Header = header;
