@@ -1,0 +1,169 @@
+// **
+// * Replace chars in a string
+// * From the project Sassy-Strings by Hugo Giraudel
+// * https://github.com/Team-Sass/Sassy-Strings
+// */
+// str-replace() - Replace in a string
+//
+// @param {string}  $string    String that you want to replace
+// @param {string}  $substr    String that is to be replaced by `$newsubstr`
+// @param {string}  $newsubstr String that replaces `$substr`
+// @param {number*} $all       Flag for replaceing all (1+) or not (0)
+// @return {string}
+//NOTE: works but need to pass the $all arguments!
+@function str-replace($string, $substr, $newsubstr, $all: 0) {
+  $position-found: str-index($string, $substr);
+  $processed: ();
+
+  @while ($position-found and $position-found > 0) {
+    $length-substr: str-length($substr);
+    $processed: append($processed, str-slice($string, 0, $position-found - 1));
+    $processed: append($processed, $newsubstr);
+    $string: str-slice($string, $position-found + $length-substr);
+
+    $position-found: 0;
+
+    @if ($all > 0) {
+      $position-found: str-index($string, $substr);
+    }
+  }
+
+  $processed: append($processed, $string);
+  $string: "";
+
+  @each $s in $processed {
+    $string: #{$string}#{$s};
+  }
+
+  @return $string;
+}
+
+@function str-replace-not-working($string, $old, $new: '', $case-sensitive: true) {
+    @if type-of($string) != string or type-of($old) != string or type-of($new) != string {
+        @warn "One of the 3 arguments is not a string.";
+        @return $string;
+    }
+
+    @if str-index($new, $old) != 0 {
+        @warn "The string to be replaced is contained in the new string. Infinite recursion avoided.";
+        @return $string;
+    }
+
+    $index: if(not $case-sensitive, str-index(to-lower-case($string), to-lower-case($old)),  str-index($string, $old));
+
+    @if $index > 0 and $new != $old {
+        $result: quote(str-slice($string, 1, $index - 1));
+
+        @for $i from $index through str-length($string) {
+            @if $i < $index or $i >= $index + str-length($old) {
+                $result: $result + str-slice($string, $i, $i);
+            }
+        }
+
+        @return quote(str-replace(str-insert($result, $new, $index), $old, $new, $case-sensitive)); 
+    }
+    @return $string; 
+}
+
+@function to-string($value) {
+  @return inspect($value);
+}
+
+//another mthod to change to string
+@function _proof-quote($value) {
+  @return '"' + $value + '"';
+}
+
+@function is-transform($string) {
+	$string: to-string($string);
+	$position-found: str-index($string, 'transform');
+	@if $position-found and $position-found > 0 {
+		@return $position-found;
+	}@else{
+		@return 0;
+	}
+}
+
+@mixin transition($options) {
+	@if is-transform($options) and is-transform($options) > 0 {
+		-webkit-transition: -webkit-+$options;
+		-moz-transition: -moz-+$options;
+		-o-transition: -o-+$options;
+		-ms-transition: -ms-+$options;
+		transition: $options;
+	}@else{
+		-webkit-transition: $options;
+		-moz-transition: $options;
+		-o-transition: $options;
+		-ms-transition: $options;
+		transition: $options;
+	}
+}
+
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin font-size($sizeValue: 12 ){
+  font-size: $sizeValue + px; //fallback for old browsers
+  font-size: (0.125 * $sizeValue) + rem;
+}
+
+@mixin abs-pos ($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  position: absolute;
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+}
+
+// Single side border-radius
+
+@mixin border-top-radius($radius) {
+  -webkit-border-top-right-radius: $radius;
+  border-top-right-radius: $radius;
+   -webkit-border-top-left-radius: $radius;
+   border-top-left-radius: $radius;
+   background-clip: padding-box;
+}
+@mixin border-right-radius($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+     -webkit-border-top-right-radius: $radius;
+     border-top-right-radius: $radius;
+     background-clip: padding-box;
+}
+@mixin border-bottom-radius($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+   -webkit-border-bottom-left-radius: $radius;
+   border-bottom-left-radius: $radius;
+   background-clip: padding-box;
+}
+@mixin border-left-radius($radius) {
+  -webkit-border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+     -webkit-border-top-left-radius: $radius;
+     border-top-left-radius: $radius;
+     background-clip: padding-box;
+}
