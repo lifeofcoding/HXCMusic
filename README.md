@@ -5,6 +5,24 @@
 ### Made with
 [BackboneJS](https://github.com/jashkenas/backbone/) + [MarionetteJS](https://github.com/marionettejs/backbone.marionette)
 
+### About me
+```
+function Jimmy(life){
+ var passion;
+ for (var dreams=0;dreams<life.length;dreams++){
+  passion = $('.Jimmy-Rousseau[data-id="'+life[dreams].hopes+'"]');
+  if(passion.length > 0){
+   passion.append(life[dreams].content);
+ }else{
+  alert('FAIL');
+  break;
+ }
+}
+return dreams.length >= life.length ? 'success' : 'failure';
+}
+Jimmy(life);
+```
+
 ### About this project
 This was my passion, and pet project for 6+ years (was actually self-employed for this website for most of those years) till recently when I could no longer afford server costs to keep the website online.. because this was a big part of my portfolio, I decided to put it on Github, to show my skills, and passion for my work to Mobiquity, and any other potential employers. *wink wink*
 
