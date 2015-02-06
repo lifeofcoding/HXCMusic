@@ -13,12 +13,12 @@ function Jimmy(life){
   passion = $('.Jimmy-Rousseau[data-id="'+life[dreams].hopes+'"]');
   if(passion.length > 0){
    passion.append(life[dreams].content);
- }else{
-  alert('FAIL');
-  break;
+  }else{
+   alert('FAIL');
+   break;
+  }
  }
-}
-return dreams.length >= life.length ? 'success' : 'failure';
+ return dreams.length >= life.length ? 'success' : 'failure';
 }
 Jimmy(life);
 ```
