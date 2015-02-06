@@ -29,20 +29,12 @@
 			if (App.isReady) {
 				App.vent.trigger('loading:end');
 				App.vent.trigger('showPlayAll');
-				App.vent.trigger('setPageTitle', 'My Favorites');
-				App.vent.trigger('setPageHeader', 'My Favorites');
-				App.vent.trigger('setPageSubTitle', '');
-
-				/*App.Util.waitForModel('Favorites', function() {
-					App.vent.trigger('show:content', new App.View.Favorites({
-						model: App.Model.Favorites
-					}));
-				});*/
+				App.Router.setPageDetails({
+					pageTitle:'My Favorites',
+					pageHeader:'My Favorites',
+					subTitle:''
+				});
 				App.vent.trigger('initialize:tooltip');
-			} else {
-				/*App.vent.on('onReady', function() {
-					App.vent.trigger('page:favorites');
-				});*/
 			}
 			
 			App.Router.currentController = this;

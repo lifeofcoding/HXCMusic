@@ -16,9 +16,11 @@
 				}).done(function(data) {
 					App.Page.Music = JSON.parse(data);
 					App.vent.trigger('loading:end');
-					App.Router.setPageTitle('Explore Music');
-					App.Router.setPageHeader('Explore Music');
-					App.Router.setPageSubTitle('Featured Artists');
+					App.Router.setPageDetails({
+						pageTitle:'Explore Music',
+						pageHeader:'Explore Music',
+						subTitle:'Featured Artists'
+					});
 					App.vent.trigger('hidePlayAll');
 					App.vent.trigger('show:content', new App.View.Music());
 				});

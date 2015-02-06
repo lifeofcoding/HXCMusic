@@ -92,6 +92,10 @@
 			App.vent.trigger('search', search);
 		},
 
+		setPageDetails: function(details){
+			App.vent.trigger('setPageDetails', details);
+		},
+
 		setPageHeader: function(title) {
 			App.vent.trigger('setPageHeader', title);
 		},

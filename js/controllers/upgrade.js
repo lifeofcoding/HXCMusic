@@ -9,9 +9,12 @@
 			$(document).ready(function() {
 				App.vent.trigger('loading:end');
 				App.vent.trigger('hidePlayAll');
-				App.vent.trigger('setPageTitle', 'Premium Access');
-				App.vent.trigger('setPageHeader', 'Premium Access');
-				App.vent.trigger('setPageSubTitle', 'Unlimited Daily Downloads, For Life.');
+				App.Router.setPageDetails({
+					pageTitle:'Premium Access',
+					pageHeader:'Premium Access',
+					subTitle:'Unlimited Daily Downloads, For Life.'
+				});
+				
 				App.vent.trigger('show:content', new App.View.Upgrade());
 			});
 		}

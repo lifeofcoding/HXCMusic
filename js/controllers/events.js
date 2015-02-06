@@ -7,9 +7,11 @@
 				App.Router.currentController.destroy();
 			}
 			App.vent.trigger('loading:end');
-			App.vent.trigger('setPageTitle', 'Events');
-			App.vent.trigger('setPageHeader', 'Events');
-			App.vent.trigger('setPageSubTitle', 'Artist playing near you');
+			App.Router.setPageDetails({
+				pageTitle:'Events',
+				pageHeader:'Events',
+				subTitle:'Artist playing near you'
+			});
 			App.vent.trigger('hidePlayAll');
 			App.vent.trigger('show:content', new App.View.Events({
 				collection: App.Model.Events

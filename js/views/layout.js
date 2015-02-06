@@ -96,6 +96,8 @@
 
 			App.vent.on('setPageTitle', _.bind(this.setPageTitle, this));
 
+			App.vent.on('setPageDetails', _.bind(this.setPageDetails, this));
+
 			App.vent.on('setPageHeader', _.bind(this.setPageHeader, this));
 
 			App.vent.on('setPageSubTitle', _.bind(this.setPageSubTitle, this));
@@ -295,9 +297,8 @@
 			title = title.replace('---', '-');
 			App.currentVideo = videoId;
 			this.Content.show(new App.View.Video());
-			this.setPageTitle(title);
-			this.setPageHeader(title);
-			this.setPageSubTitle('');
+			this.setPageDetails({pageTitle:title, pageHeader:title, subTitle:''});
+
 			this.hidePlayAll();
 			App.Util.waitTillReady('#video_player', function() {
 				$(this).mediaelementplayer({
@@ -657,9 +658,7 @@
 
 		showError: function() {
 			App.vent.trigger('loading:end');
-			this.setPageTitle('Loading Error');
-			this.setPageHeader('Loading Error');
-			this.setPageSubTitle('');
+			this.setPageDetails({pageTitle:'Loading Error', pageHeader:'Loading Error', subTitle:''});
 			this.hidePlayAll();
 			App.vent.trigger('message', 'Error', 'Unable to load page...');
 
@@ -698,9 +697,7 @@
 				cursor: 'progress'
 			});
 
-			this.setPageTitle(App.Util.capitalizeWords(title));
-			this.setPageHeader('Loading...');
-			this.setPageSubTitle('Fetching content...');
+			this.setPageDetails({pageTitle:App.Util.capitalizeWords(title), pageHeader:'Loading...', subTitle:'Fetching content...'});
 			$('#spinner').fadeIn();
 			$('#middle').addClass('blur');
 		},
@@ -792,16 +789,35 @@
 			}
 		},
 
+		setPageDetails: function(details){
+			if(typeof details === 'object'){
+				if(typeof details.pageTitle !== 'undefined'){
+					$('title').html(App.Util.capitalizeWords(details.pageTitle) + ' at ' + App.websiteTitle + '&trade;');
+				}
+				if(typeof details.subTitle !== 'undefined'){
+					this.ui.pageSubTitle.text(details.subTitle);
+				}
+				if(typeof details.pageHeader !== 'undefined'){
+					this.ui.pageHeader.text(details.pageHeader);
+				}
+			}else{
+				console.error('Error: details variable is not an object!');
+			}
+		},
+
 		setPageHeader: function(title) {
-			this.ui.pageHeader.text(title);
+			//this.ui.pageHeader.text(title);
+			console.warn('This function is deprecated! Use setPageDetails instead');
 		},
 
 		setPageSubTitle: function(title) {
-			this.ui.pageSubTitle.text(title);
+			//this.ui.pageSubTitle.text(title);
+			console.warn('This function is deprecated! Use setPageDetails instead');
 		},
 
 		setPageTitle: function(title) {
-			$('title').html(App.Util.capitalizeWords(title) + ' at ' + App.websiteTitle + '&trade;');
+			//$('title').html(App.Util.capitalizeWords(title) + ' at ' + App.websiteTitle + '&trade;');
+			console.warn('This function is deprecated! Use setPageDetails instead');
 		},
 
 		initializeToolTip: function() {
@@ -840,9 +856,7 @@
 			}else{
 				this.updateURL(App.resultsType + '/' + App.Util.seoFriendlyDashes(searchTerms));
 			}
-			this.setPageTitle(pageTitle);
-			this.setPageHeader('Search Results');
-			this.setPageSubTitle(pageTitle);
+			this.setPageDetails({pageTitle:pageTitle, pageHeader:'Search Results', subTitle:pageTitle});
 			this.Content.show(new App.View.Results());
 
 			var validateImages = $(".song_row_cover_art .validateImg");
