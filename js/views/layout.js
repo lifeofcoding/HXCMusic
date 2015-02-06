@@ -640,11 +640,7 @@
 		showDownloadsLeft: function() {
 			var downloadsLeft = App.Model.User.get('downloadLimit') - App.Model.User.get('dailyDownloads');
 			if (downloadsLeft > 0) {
-				if(downloadsLeft === 1){
-					App.vent.trigger('message', '', downloadsLeft + ' download left for today');
-				}else{
-					App.vent.trigger('message', '', downloadsLeft + ' downloads left for today');
-				}
+				App.vent.trigger('message', '', downloadsLeft + ' ' + (downloadsLeft === 1 ? 'download' : 'downloads') + ' left for today');
 			} else {
 				var warningImage = '<img src="' + App.baseURL + '/images/download-warning.png" class="download-warning">';
 				App.vent.trigger('message', '', warningImage + 'No more downloads left for today', {
