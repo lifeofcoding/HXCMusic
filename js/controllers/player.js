@@ -1,7 +1,7 @@
 (function(App) {
 	'use strict';
 	var player = Marionette.Controller.extend({
-		
+
 		/* Moved from view to act as a proper MVC controller & view */
 		ui: {
 			playButton: '#play_button',
@@ -9,7 +9,7 @@
 			playlistButton: '#playlist_button',
 			playlist: '#current_playlist'
 		},
-		
+
 		/* Moved from view to act as a proper MVC controller & view */
 		events: {
 			'click @ui.playButton': 'togglePlay',
@@ -33,7 +33,7 @@
 
 			App.vent.on('radio', _.bind(this.radio, this));
 			App.vent.on('initialize:player', _.bind(this.initializePlayer, this));
-			
+
 			var me = this;
 			App.Util.waitTillReady('#volume_thumb', function() {
 				App.Volume = {};
@@ -68,7 +68,7 @@
 				$('#volume_back').on('click', function(e) {
 					me.volume.mousemove(e);
 				});
-				
+
 				if($.cookie('HXCVolume')){
 					var volume = JSON.parse($.cookie('HXCVolume'));
 					if(typeof App.Player.setVolume !== 'undefined'){
@@ -88,12 +88,12 @@
 			App.Player.currentPlaylist = typeof $.cookie('currentPlaylist') !== 'undefined' ? Number($.cookie('currentPlaylist')) : 0;
 			App.resultsType = 'music';
 		},
-		
+
 /* 		togglePlayButton: function(){
 			debugger;
 			this.ui.playButton.addClass('paused');
 		}, */
-		
+
 		/*setupEvents: function(){
 			var _this = this;
 			_.each(this.events, function(key, selector){
@@ -102,13 +102,13 @@
 				}
 			});
 		},*/
-		
+
 		downloadPlaying: function(e){
 			if(typeof $(e.target).data('song-id') !== 'undefined'){
 				App.Dialog.Download.apply(this, arguments);
 			}
 		},
-		
+
 		togglePlaylist: function() {
 			var css = {},
 				playlist = $('#current_playlist'),
@@ -127,7 +127,7 @@
 				}
 			});
 		},
-		
+
 		toggleShuffle: function(e) {
 			e.preventDefault();
 			if (this.ui.shuffleButton.hasClass('selected')) {
@@ -138,7 +138,7 @@
 				App.Player.shuffle = true;
 			}
 		},
-		
+
 		togglePlay: function() {
 			if ($('#audio-element').length > 0) {
 				if (this.ui.playButton.hasClass('paused')) {
@@ -156,7 +156,7 @@
 				}
 			}
 		},
-		
+
 		volume: {
 			mousemove: function(e) {
 				var x = e.clientX;
@@ -185,7 +185,7 @@
 				$(document).unbind('mouseup');
 			}
 		},
-		
+
 		radio: function(e) {
 			var me = this;
 			if (typeof e !== 'undefined') {
@@ -220,7 +220,7 @@
 				$('#player-download-button').hide();
 			});
 		},
-		
+
 		playNext: function() {
 			var me = this;
 			if (typeof App.Player.currentSongId !== 'undefined' && App.Player.currentSongId !== null) {
@@ -261,11 +261,14 @@
 					App.Player.currentSongId = songId;
 					App.Player.currentSongTitle = songTitle;
 					App.Player.play();
-					
+
 					$('#player-download-button').show();
-					$('#player-download-button div, #player-download-button').data('song-id', songId);
-					$('#player-download-button div, #player-download-button').data('song-title', songTitle);
-					$('#player-download-button div, #player-download-button').data('playtime', App.Model.Queue.models[plus].get('bitrate'));
+					$('#player-download-button div, #player-download-button').data({
+						'song-id': songId,
+						'song-title': songTitle,
+						playtime: App.Model.Queue.models[plus].get('bitrate')
+					});
+
 				} else {
 					App.vent.trigger('message', '', 'This is the last song!');
 				}
@@ -301,7 +304,7 @@
 						bitrate = App.Model.Queue.models[plus].get('bitrate');
 					$('.now-playing').show();
 					$('#audio-span').html('<audio src="' + App.baseURL + '/fetch/' + songId + '.mp3" autoplay="autoplay" id="audio-element" width="100%" volume="' + App.Volume.volume + '"></audio>');
-					
+
 					App.vent.trigger('initialize:player');
 					$('.now-playing-artist').text(decodeURI(App.Util.capitalizeWords(songTitle))).show();
 					$('#display_coverart').html('<img src="" width="40" height="40" class="display_coverart_glare">').show();
@@ -314,7 +317,7 @@
 					App.Player.currentSongId = songId;
 					App.Player.currentSongTitle = songTitle;
 					App.Player.play();
-					
+
 					$('#player-download-button').show();
 
 					$('#player-download-button div, #player-download-button').data({
@@ -329,7 +332,7 @@
 				App.Player.Radio();
 			}
 		},
-		
+
 		addToFavorites: function(e){
 			if (App.User.isLoggedIn) {
 				var songId = $(e.target).data('song-id'),
@@ -362,7 +365,7 @@
 				App.vent.trigger('message', 'Error', 'You must be logged in to add to favorites.');
 			}
 		},
-		
+
 		addToQueue: function(e) {
 			var model;
 			if (App.currentPage === 'favorites') {
@@ -375,12 +378,12 @@
 					songId: songId
 				});
 			var songModel = songRecord.clone();
-			
+
 			App.Model.Queue.add(songModel);
 			//App.vent.trigger('update:queue');
 			App.vent.trigger('message', 'Added To Queue', App.Util.capitalizeWords(songRecord.get('name')));
 		},
-		
+
 		removeFromFavorites: function(e){
 			var model = App.Model.Favorites;
 
@@ -393,7 +396,7 @@
 				App.vent.trigger('message', 'Removed From Favorites', App.Util.capitalizeWords(songRecord.get('name')));
 			}});
 		},
-		
+
 		removeFromQueue: function(){
 			var model = App.Model.Queue;
 			var songId = $(e.target).data('song-id'),
@@ -404,11 +407,11 @@
 			//App.vent.trigger('update:queue');
 			App.vent.trigger('message', 'Removed From Queue', App.Util.capitalizeWords(songRecord.get('name')));
 		},
-		
+
 		showDownloadDialog: function(e) {
 			App.Dialog.Download.apply(this, arguments);
 		},
-		
+
 		streamSong: function(e) {
 			e.preventDefault();
 
@@ -433,7 +436,7 @@
 				validateImage.attr('src', App.baseURL + '/images/question-mark.png');
 			});
 			validateImage.attr('src', image);
-			
+
 			App.Player.currentSongId = songId;
 			App.Player.currentSongTitle = songTitle;
 			App.Player.play();
@@ -443,7 +446,7 @@
 			$('#player-download-button div, #player-download-button').data('song-title', songTitle);
 			$('#player-download-button div, #player-download-button').data('playtime', playtime);
 		},
-		
+
 		initializePlayer: function() {
 			var me = this, currentProps = App.Player;
 			App.Player = $('#audio-element').mediaelementplayer({
@@ -536,7 +539,7 @@
 			App.Player.shuffle = currentProps.shuffle;
 			App.Player.currentPlaylist = currentProps.currentPlaylist;
 		},
-		
+
 		streamYoutubeSong: function(url) {
 			var me = this, currentProps = App.Player;
 			url = 'https://www.youtube.com/watch?v=' + url;
