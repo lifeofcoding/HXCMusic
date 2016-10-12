@@ -1,5 +1,5 @@
 # HXCMusic
-**If you are from Mobiquity:**
+**Information for potential employers:**
  > Please keep checking back, as for the next couple of days I will be documenting, optimizing code, and removing redudent code, adding new repos from other projects ect... As a coder who loves development, I oddly hate code, and constantly try to optimize existing code, and new code to accoplish my goal in the least amount of lines. You will also see I am somewhat obsessed with automating any and all processes that I can, like my auto cache, notifications, mysql backups, automated mover.io backups, and others. Any and all functions I find myself using a lot I add it to my App.Util object like string formatting/stripping, capitalization, grabbing file names, checking if an element is in viewport/view ect..
 
 ### Made with
